@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Golden Ratio Calculator</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+    
+      body
+      {
+        padding-top: 81px;
+      }
+      body,
+      h1, h2, h3, h4, h5, h6,
+      label
+      {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-weight: lighter;
+        letter-spacing: 0.0901em;
+      }
+      body,
+      a,
+      a:hover
+      {
+      }
+      @media screen and (max-width: 768px)
+      {
+      }
+    
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Golden Ratio Calculator</a>
+        </div>
+        <form class="navbar-form navbar-left">
+          <div class="form-group">
+            <input id="base-number" type="text" class="form-control" placeholder="Base Number" value="30" autocomplete="off" title="Option: Adding / will disable display in actual size">
+          </div>
+        </form>
+        <p class="navbar-text navbar-right">1.6180339887...</p>
+      </div>
+    </nav>
+    
+    <div class="container">
+      <div id="smaller" class="col-xs-5">
+      </div>
+      <div id="larger" class="col-xs-7">
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    
+    <script type="text/javascript">
+      var base = $('#base-number');
+      var smaller = function(n, p) {
+        return n * Math.pow(0.6180339887, p)
+      }
+      var rebuild_elements = function(e, n, s, g) {
+        e.empty();
+        for (var i = 0; i < 11; ++i) {
+          var pow = 0.5 * i;
+          var pow_g = Math.pow(g, pow);
+          var size = n * pow_g;
+          var disp_size = s ? 30 : size;
+          e.append($('<p></p>', {
+            text: Math.round(size) + 'px ',
+            style: 'font-size: ' + disp_size + 'px; margin-bottom: ' + smaller(disp_size, 4) + 'px;'
+          }));
+          e.append($('<p></p>', {
+            text: '(' + g + '^' + pow + ')',
+            style: 'font-size: ' + smaller(disp_size, 2) + 'px; margin-bottom: ' + disp_size + 'px;'
+          }));
+        }
+      };
+      var rebuild = function() {
+        var n = Number(base.val()) || 30;
+        var s = /\//.test((base.val() || ''))
+        rebuild_elements($('#smaller'), n, s, 0.6180339887);
+        rebuild_elements($('#larger'),  n, s, 1.6180339887);
+      };
+      base.on('change keyup blur', rebuild);
+      rebuild();
+    </script>
+  </body>
+</html>
